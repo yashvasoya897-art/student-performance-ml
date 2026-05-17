@@ -1,20 +1,73 @@
-# student-performance-ml
-This project uses Machine Learning (Logistic Regression) to predict student performance (Pass/Fail) based on study hours, attendance, and assignment scores. It includes data preprocessing, train-test split, model training, and accuracy evaluation.
+# 🎯 Student Performance Prediction (ML + Django Project)
+
+A Machine Learning based web application that predicts student performance (Marks / Pass-Fail) using academic inputs like study hours, attendance, sleep, and previous marks.
+
+---
+
+## 🚀 Features
+
+- 🔐 Login / Register system (User Authentication)
+- 📊 AI-based Marks Prediction
+- 🤖 Smart Feedback System (Excellent / Good / Improve)
+- 📈 Performance Graph (Chart.js visualization)
+- 📋 Prediction History tracking
+- 👤 User Profile page
+- 🌙 Dark Mode UI
+- 📱 Responsive Bootstrap design
+
+---
+
+## 🧠 Machine Learning Model
+
+- Algorithm: Linear Regression / Logistic Regression
+- Input Features:
+  - Study Hours
+  - Attendance %
+  - Sleep Hours
+  - Previous Marks
+- Output:
+  - Predicted Marks / Pass-Fail
+
+---
+
+## 🛠️ Tech Stack
+
+- Python (Django)
+- HTML, CSS, Bootstrap 5
+- Scikit-learn, Pandas, NumPy
+- Chart.js
+- SQLite3 Database
+
+---
+
+## 📂 Project Structure
+
+mlproject/
+│
+├── predictor/        (Django App)
+├── templates/        (HTML Files)
+├── static/           (CSS/JS)
+├── model.pkl         (Trained ML Model)
+├── db.sqlite3        (Database)
+├── manage.py
+
+---
+
+## 📸 Output Screenshots
+
+(Add screenshots folder in repo)
+
+- Home Page  
+- Dashboard  
+- Graph Page  
+
+---
+
+## ▶️ How to Run
+
+```bash
+pip install -r requirements.txt
+python manage.py migrate
+python manage.py runserver
 
 
-# Student Performance Prediction
-This is a Machine Learning project that predicts whether a student will PASS or FAIL based on study hours, attendance, and assignment marks.
-
-## Model Used:
-Logistic Regression
-
-## Features
-- Study Hours
-- Attendance,
-- Assignment Marks
-
-## Output=
-Pass (1) or/ Fail (0)
-
-## How to Run
-python student.py
