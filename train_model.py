@@ -3,7 +3,6 @@ import pandas as pd
 from sklearn.linear_model import LinearRegression
 import joblib
 
-# sample dataset (example)
 data = pd.DataFrame({
     "hours": [1,2,3,4,5],
     "attendance": [60,70,80,90,95],
