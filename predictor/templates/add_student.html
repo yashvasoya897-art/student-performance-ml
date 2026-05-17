@@ -1,0 +1,12 @@
+<h1>Add Student</h1>
+
+<form method="POST">
+    {% csrf_token %}
+
+    <input type="text" name="name" placeholder="Enter Name">
+    <input type="number" name="marks" placeholder="Enter Marks">
+
+    <button type="submit">Submit</button>
+</form>
+<h1>Add Student Page</h1>
+<h2>{{ result }}</h2>

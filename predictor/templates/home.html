@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="container mt-5">
+
+    <div class="card p-4 shadow">
+
+        <h2>📊 Student Performance Predictor</h2>
+
+        <form method="POST">
+
+            {% csrf_token %}
+
+            <label>Study Hours</label>
+            <input type="number" step="any" name="hours" class="form-control mb-2" required>
+
+            <label>Attendance (%)</label>
+            <input type="number" step="any" name="attendance" class="form-control mb-2" required>
+
+            <label>Sleep Hours</label>
+            <input type="number" step="any" name="sleep" class="form-control mb-2" required>
+
+            <label>Previous Marks</label>
+            <input type="number" step="any" name="prev_marks" class="form-control mb-3" required>
+
+            <button class="btn btn-primary w-100">
+                Predict Marks
+            </button>
+
+        </form>
+
+        {% if result %}
+
+        <div class="alert alert-success mt-3">
+            🎯 Predicted Marks = {{ result }}
+        </div>
+
+        {% if result %}
+
+
+        <div class="alert alert-info">
+            🤖 AI Feedback: <b>{{ feedback }}</b>
+        </div>
+
+{% endif %}
+
+        {% endif %}
+
+    </div>
+
+</div>
+
+{% endblock %}

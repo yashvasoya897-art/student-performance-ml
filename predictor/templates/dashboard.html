@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="container mt-4">
+
+    <h2 class="mb-3">📊 Dashboard</h2>
+
+    {% if total == 0 %}
+        <div class="alert alert-warning">
+            No predictions yet. Please add data first.
+        </div>
+    {% else %}
+
+    <div class="row text-center">
+
+        <div class="col-md-3">
+            <div class="card p-3 shadow">
+                <h5>Total</h5>
+                <h3>{{ total }}</h3>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="card p-3 shadow">
+                <h5>Average</h5>
+                <h3>{{ avg|floatformat:2 }}</h3>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="card p-3 shadow">
+                <h5>Max</h5>
+                <h3>{{ max }}</h3>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="card p-3 shadow">
+                <h5>Min</h5>
+                <h3>{{ min }}</h3>
+            </div>
+        </div>
+
+    </div>
+
+    {% endif %}
+
+</div>
+
+{% endblock %}

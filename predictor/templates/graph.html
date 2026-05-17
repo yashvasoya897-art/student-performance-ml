@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<h2>📈 Performance Graph</h2>
+
+<!-- ⬇ DOWNLOAD BUTTON -->
+<button class="btn btn-success mb-3" onclick="downloadGraph()">
+    ⬇ Download Graph
+</button>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<canvas id="myChart" height="120"></canvas>
+
+<script>
+    const hours = JSON.parse('{{ hours|escapejs }}');
+    const results = JSON.parse('{{ results|escapejs }}');
+
+    const ctx = document.getElementById('myChart');
+
+    const chart = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: hours,
+            datasets: [{
+                label: 'Marks Prediction',
+                data: results,
+                borderColor: 'blue',
+                fill: false,
+                tension: 0.3
+            }]
+        }
+    });
+
+    // 📥 DOWNLOAD FUNCTION
+    function downloadGraph() {
+        const canvas = document.getElementById("myChart");
+
+        const link = document.createElement("a");
+        link.href = canvas.toDataURL("image/png");
+        link.download = "performance_graph.png";
+        link.click();
+    }
+</script>
+
+{% endblock %}
+
