@@ -1,23 +1,23 @@
-# 🎯 Student Performance Prediction (ML + Django Project)
+#  Student Performance Prediction (ML + Django Project)
 
 A Machine Learning based web application that predicts student performance (Marks / Pass-Fail) using academic inputs like study hours, attendance, sleep, and previous marks.
 
 ---
 
-## 🚀 Features
+## Features
 
-- 🔐 Login / Register system (User Authentication)
-- 📊 AI-based Marks Prediction
-- 🤖 Smart Feedback System (Excellent / Good / Improve)
-- 📈 Performance Graph (Chart.js visualization)
-- 📋 Prediction History tracking
-- 👤 User Profile page
-- 🌙 Dark Mode UI
-- 📱 Responsive Bootstrap design
+- Login / Register system (User Authentication)
+- AI-based Marks Prediction
+- Smart Feedback System (Excellent / Good / Improve)
+- Performance Graph (Chart.js visualization)
+- Prediction History tracking
+- User Profile page
+- Dark Mode UI
+- Responsive Bootstrap design
 
 ---
 
-## 🧠 Machine Learning Model
+## Machine Learning Model
 
 - Algorithm: Linear Regression / Logistic Regression
 - Input Features:
@@ -30,7 +30,7 @@ A Machine Learning based web application that predicts student performance (Mark
 
 ---
 
-## 🛠️ Tech Stack
+## Tech Stack
 
 - Python (Django)
 - HTML, CSS, Bootstrap 5
@@ -40,7 +40,7 @@ A Machine Learning based web application that predicts student performance (Mark
 
 ---
 
-## 📂 Project Structure
+## Project Structure
 
 mlproject/
 │
@@ -53,7 +53,7 @@ mlproject/
 
 ---
 
-## 📸 Output Screenshots
+## Output Screenshots
 
 (Add screenshots folder in repo)
 
@@ -63,7 +63,7 @@ mlproject/
 
 ---
 
-## ▶️ How to Run
+##  How to Run
 
 ```bash
 pip install -r requirements.txt
