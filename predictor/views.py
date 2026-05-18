@@ -14,9 +14,6 @@ import numpy as np
 from django.conf import settings
 import os
 
-model_path = os.path.join(settings.BASE_DIR, "model.pkl")
-model = joblib.load(model_path)
-
 # HOME PAGE
 @login_required(login_url="/")
 def home(request):
