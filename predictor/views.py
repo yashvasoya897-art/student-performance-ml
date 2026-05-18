@@ -11,6 +11,12 @@ import json
 import joblib
 import numpy as np
 
+from django.conf import settings
+import os
+
+model_path = os.path.join(settings.BASE_DIR, "model.pkl")
+model = joblib.load(model_path)
+
 # HOME PAGE
 @login_required(login_url="/")
 def home(request):
@@ -18,7 +24,8 @@ def home(request):
     result = None
     feedback = None
 
-    model = joblib.load("model.pkl")
+    model_path = os.path.join(settings.BASE_DIR, "model.pkl")
+    model = joblib.load(model_path)
 
     if request.method == "POST":
 
@@ -174,41 +181,5 @@ def history_view(request):
         "data": data
     })
 
-
-# GRAPH
-@login_required(login_url="/")
-def graph_view(request):
-
-    data = PredictionHistory.objects.filter(
-        user=request.user
-    )
-
-    hours = []
-    results = []
-
-    for i in data:
-
-        hours.append(i.hours)
-        results.append(i.result)
-
-    return render(request, "graph.html", {
-        "hours": json.dumps(hours),
-        "results": json.dumps(results),
-    })
-
-
-@login_required(login_url="/")
-def profile_view(request):
-
-    profile, created = Profile.objects.get_or_create(
-        user=request.user
-    )
-
-    total_predictions = PredictionHistory.objects.filter(
-        user=request.user
-    ).count()
-
-    return render(request, "profile.html", {
-        "profile": profile,
         "total_predictions": total_predictions,
     })
