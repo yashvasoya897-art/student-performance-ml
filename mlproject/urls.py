@@ -24,6 +24,7 @@ from django.contrib.sitemaps.views import sitemap
 from django.contrib.sitemaps import Sitemap
 from django.urls import reverse
 
+from django.views.generic import TemplateView
 
 class StaticViewSitemap(Sitemap):
     priority = 0.8
@@ -63,6 +64,8 @@ urlpatterns = [
         {'sitemaps': sitemaps},
         name='django.contrib.sitemaps.views.sitemap'
     ),
+    path("sitemap.xml", TemplateView.as_view(template_name="sitemap.xml", content_type="text/xml")),
+]
 ]
 
 urlpatterns += static(
