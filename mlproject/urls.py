@@ -58,6 +58,7 @@ urlpatterns = [
 
     # sitemap (FIXED)
     path('sitemap.xml', sitemap, {'sitemaps': sitemaps}, name='sitemap'),
+    path('sitemap.xml', views.sitemap_xml),
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
