@@ -1,9 +1,10 @@
-from django.contrib.sitemaps import Sitemap
-from django.urls import reverse
+from django.contrib.sitemaps.views import sitemap
+from predictor.sitemaps import StaticViewSitemap
 
-class StaticViewSitemap(Sitemap):
-    def items(self):
-        return ['login', 'register', 'home']
+sitemaps = {
+    'static': StaticViewSitemap,
+}
 
-    def location(self, item):
-        return reverse(item)
+urlpatterns += [
+    path("sitemap.xml", sitemap, {"sitemaps": sitemaps}),
+]
