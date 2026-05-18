@@ -14,27 +14,26 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
-from django.conf import settings
-from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import path
-from predictor import views
-
 from django.contrib.sitemaps.views import sitemap
 from django.contrib.sitemaps import Sitemap
 from django.urls import reverse
+from predictor import views
+from django.conf import settings
+from django.conf.urls.static import static
 
-from django.views.generic import TemplateView
 
 class StaticViewSitemap(Sitemap):
     priority = 0.8
     changefreq = "daily"
 
     def items(self):
-        return ['login', 'register', 'home']
+        return ['login', 'register', 'home', 'dashboard', 'history', 'graph', 'profile']
 
     def location(self, item):
         return reverse(item)
+
 
 sitemaps = {
     'static': StaticViewSitemap,
@@ -45,30 +44,23 @@ urlpatterns = [
 
     path('', views.login_view, name='login'),
     path('register/', views.register_view, name='register'),
-
     path('home/', views.home, name='home'),
     path('dashboard/', views.dashboard, name='dashboard'),
-
     path('history/', views.history_view, name='history'),
     path('graph/', views.graph_view, name='graph'),
     path('profile/', views.profile_view, name='profile'),
-
     path('logout/', views.logout_view, name='logout'),
 
     path('accounts/login/', views.login_view),
 
-    # sitemap
+    #  sitemap
     path(
         'sitemap.xml',
         sitemap,
         {'sitemaps': sitemaps},
         name='django.contrib.sitemaps.views.sitemap'
     ),
-    path("sitemap.xml", TemplateView.as_view(template_name="sitemap.xml", content_type="text/xml")),
-]
 ]
 
-urlpatterns += static(
-    settings.MEDIA_URL,
-    document_root=settings.MEDIA_ROOT
+urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 )
