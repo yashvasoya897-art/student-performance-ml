@@ -215,3 +215,20 @@ def profile_view(request):
         "profile": profile,
         "total_predictions": total_predictions,
     })
+
+from django.http import HttpResponse
+
+def sitemap_xml(request):
+    xml = """<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+    <url>
+        <loc>https://student-performance-ml-jiy7.onrender.com/</loc>
+    </url>
+    <url>
+        <loc>https://student-performance-ml-jiy7.onrender.com/register/</loc>
+    </url>
+    <url>
+        <loc>https://student-performance-ml-jiy7.onrender.com/home/</loc>
+    </url>
+</urlset>"""
+    return HttpResponse(xml, content_type="text/xml")
