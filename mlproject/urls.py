@@ -20,8 +20,25 @@ from django.contrib import admin
 from django.urls import path
 from predictor import views
 
-urlpatterns = [
+from django.contrib.sitemaps.views import sitemap
+from django.contrib.sitemaps import Sitemap
+from django.urls import reverse
 
+class StaticViewSitemap(Sitemap):
+    priority = 0.8
+    changefreq = "daily"
+
+    def items(self):
+        return ['login', 'register', 'home']
+
+    def location(self, item):
+        return reverse(item)
+
+sitemaps = {
+    'static': StaticViewSitemap,
+}
+
+urlpatterns = [
     path('admin/', admin.site.urls),
 
     path('', views.login_view, name='login'),
@@ -37,6 +54,14 @@ urlpatterns = [
     path('logout/', views.logout_view, name='logout'),
 
     path('accounts/login/', views.login_view),
+
+    # sitemap
+    path(
+        'sitemap.xml',
+        sitemap,
+        {'sitemaps': sitemaps},
+        name='django.contrib.sitemaps.views.sitemap'
+    ),
 ]
 
 urlpatterns += static(
