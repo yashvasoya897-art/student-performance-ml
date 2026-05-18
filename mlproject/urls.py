@@ -15,10 +15,9 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path
-from django.contrib.sitemaps.views import sitemap
+from django.urls import path, include, reverse
 from django.contrib.sitemaps import Sitemap
-from django.urls import reverse
+from django.contrib.sitemaps.views import sitemap
 from predictor import views
 from django.conf import settings
 from django.conf.urls.static import static
@@ -29,7 +28,7 @@ class StaticViewSitemap(Sitemap):
     changefreq = "daily"
 
     def items(self):
-        return ['login', 'register', 'home', 'dashboard', 'history', 'graph', 'profile']
+        return ['login', 'register', 'home']
 
     def location(self, item):
         return reverse(item)
@@ -53,14 +52,8 @@ urlpatterns = [
 
     path('accounts/login/', views.login_view),
 
-    #  sitemap
-    path(
-        'sitemap.xml',
-        sitemap,
-        {'sitemaps': sitemaps},
-        name='django.contrib.sitemaps.views.sitemap'
-    ),
+    # sitemap (FIXED)
+    path('sitemap.xml', sitemap, {'sitemaps': sitemaps}, name='sitemap'),
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
-)
