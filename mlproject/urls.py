@@ -21,13 +21,21 @@ from django.urls import path
 from predictor import views
 
 urlpatterns = [
+
     path('admin/', admin.site.urls),
 
     path('', views.login_view, name='login'),
     path('register/', views.register_view, name='register'),
+
     path('home/', views.home, name='home'),
     path('dashboard/', views.home, name='dashboard'),
+
+    path('history/', views.history_view, name='history'),
+    path('graph/', views.graph_view, name='graph'),
+    path('profile/', views.profile_view, name='profile'),
+
     path('logout/', views.logout_view, name='logout'),
+
     path('accounts/login/', views.login_view),
 ]
 
