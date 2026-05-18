@@ -4,3 +4,4 @@ whitenoise
 numpy
 pandas
 scikit-learn
+Pillow
