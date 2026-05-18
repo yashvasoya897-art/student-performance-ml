@@ -178,5 +178,40 @@ def history_view(request):
         "data": data
     })
 
+# GRAPH
+@login_required(login_url="/")
+def graph_view(request):
+
+    data = PredictionHistory.objects.filter(
+        user=request.user
+    )
+
+    hours = []
+    results = []
+
+    for i in data:
+
+        hours.append(i.hours)
+        results.append(i.result)
+
+    return render(request, "graph.html", {
+        "hours": json.dumps(hours),
+        "results": json.dumps(results),
+    })
+
+
+@login_required(login_url="/")
+def profile_view(request):
+
+    profile, created = Profile.objects.get_or_create(
+        user=request.user
+    )
+
+    total_predictions = PredictionHistory.objects.filter(
+        user=request.user
+    ).count()
+
+    return render(request, "profile.html", {
+        "profile": profile,
         "total_predictions": total_predictions,
     })
