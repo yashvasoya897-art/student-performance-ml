@@ -86,3 +86,7 @@ LOGOUT_REDIRECT_URL = "/"
 AUTHENTICATION_BACKENDS = [
     'django.contrib.auth.backends.ModelBackend',
 ]
+
+CSRF_TRUSTED_ORIGINS = [
+    "https://student-performance-ml-jiy7.onrender.com"
+]
