@@ -29,7 +29,7 @@
         </form>
 
         <!-- RESULT -->
-        {% if result %}
+        {% if result is not None %}
         <div class="alert alert-success mt-3 text-center">
             🎯 Predicted Result: <b>{{ result }}</b>
         </div>
