@@ -1,4 +1,6 @@
-ock content %}
+{% extends "base.html" %}
+
+{% block content %}
 
 <div class="container mt-5">
 
@@ -8,6 +10,7 @@ ock content %}
 
         <form method="POST">
             {% csrf_token %}
+
             {{ form.as_p }}
 
             <button type="submit" class="btn btn-primary w-100">
@@ -19,11 +22,11 @@ ock content %}
 
         <!-- GOOGLE LOGIN -->
         <a href="/accounts/google/login/" class="btn btn-danger w-100">
-            🔥 Login with Google
+            Login with Google
         </a>
 
     </div>
 
 </div>
 
-{% endblock %}
+{% endblock content %}
