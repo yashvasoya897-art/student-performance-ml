@@ -2,53 +2,465 @@
 
 {% block content %}
 
-<div class="container mt-5">
+<!-- HERO SECTION -->
 
-    <div class="card p-4 shadow">
+<section class="hero-section">
 
-        <h2>📊 Student Performance Predictor</h2>
+    <div class="hero-overlay"></div>
 
-        <form method="POST">
+    <div class="container hero-content">
 
-            {% csrf_token %}
+        <div class="row align-items-center min-vh-100">
 
-            <label>Study Hours</label>
-            <input type="number" step="any" name="hours" class="form-control mb-2" required>
+            <div class="col-lg-6">
 
-            <label>Attendance (%)</label>
-            <input type="number" step="any" name="attendance" class="form-control mb-2" required>
+                <span class="hero-badge">
+                    AI Powered Education System
+                </span>
 
-            <label>Sleep Hours</label>
-            <input type="number" step="any" name="sleep" class="form-control mb-2" required>
+                <h1 class="hero-title">
+                    Predict Student Performance
+                    <span>Using Machine Learning</span>
+                </h1>
 
-            <label>Previous Marks</label>
-            <input type="number" step="any" name="prev_marks" class="form-control mb-3" required>
+                <p class="hero-text">
 
-            <button class="btn btn-primary w-100">
-                Predict Marks
-            </button>
+                    Advanced AI prediction system that analyzes
+                    study hours, attendance, sleep and previous
+                    marks to forecast student exam performance.
 
-        </form>
+                </p>
 
-        {% if result %}
+                <div class="hero-buttons">
 
-        <div class="alert alert-success mt-3">
-            🎯 Predicted Marks = {{ result }}
+                    <a href="/dashboard/">
+                        <button class="main-btn">
+                            <i class="fa-solid fa-chart-line"></i>
+                            Open Dashboard
+                        </button>
+                    </a>
+
+                </div>
+
+            </div>
+
+            <div class="col-lg-6 text-center">
+
+                <img
+                    src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?q=80&w=1200&auto=format&fit=crop"
+                    class="hero-img">
+
+            </div>
+
         </div>
-
-        {% if result %}
-
-
-        <div class="alert alert-info">
-            🤖 AI Feedback: <b>{{ feedback }}</b>
-        </div>
-
-{% endif %}
-
-        {% endif %}
 
     </div>
 
-</div>
+</section>
+
+
+
+<!-- FEATURES -->
+
+<section class="features-section">
+
+    <div class="container">
+
+        <div class="section-title text-center">
+
+            <h1>Why Choose ML Predictor?</h1>
+
+            <p>
+                Powerful AI tools for modern education systems
+            </p>
+
+        </div>
+
+        <div class="row g-4 mt-4">
+
+            <div class="col-md-3">
+
+                <div class="feature-card">
+
+                    <i class="fa-solid fa-brain"></i>
+
+                    <h4>AI Prediction</h4>
+
+                    <p>
+                        Smart Machine Learning based marks prediction.
+                    </p>
+
+                </div>
+
+            </div>
+
+            <div class="col-md-3">
+
+                <div class="feature-card">
+
+                    <i class="fa-solid fa-chart-line"></i>
+
+                    <h4>Analytics</h4>
+
+                    <p>
+                        Interactive dashboard and performance graphs.
+                    </p>
+
+                </div>
+
+            </div>
+
+            <div class="col-md-3">
+
+                <div class="feature-card">
+
+                    <i class="fa-solid fa-bolt"></i>
+
+                    <h4>Fast Result</h4>
+
+                    <p>
+                        Instant student performance prediction system.
+                    </p>
+
+                </div>
+
+            </div>
+
+            <div class="col-md-3">
+
+                <div class="feature-card">
+
+                    <i class="fa-solid fa-shield-halved"></i>
+
+                    <h4>Secure</h4>
+
+                    <p>
+                        Complete secure authentication and user privacy.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+
+<!-- ABOUT SECTION -->
+
+<section class="about-section">
+
+    <div class="container">
+
+        <div class="row align-items-center g-5">
+
+            <div class="col-lg-6">
+
+                <img
+                    src="https://images.unsplash.com/photo-1523240795612-9a054b0db644?q=80&w=1200&auto=format&fit=crop"
+                    class="about-img">
+
+            </div>
+
+            <div class="col-lg-6">
+
+                <span class="about-badge">
+                    ABOUT PROJECT
+                </span>
+
+                <h1 class="about-title">
+                    Smart Education System
+                    Using Artificial Intelligence
+                </h1>
+
+                <p class="about-text">
+
+                    This project helps students and teachers
+                    analyze academic performance using
+                    Machine Learning algorithms.
+
+                </p>
+
+                <p class="about-text">
+
+                    Built with Django, Python, Bootstrap,
+                    Artificial Intelligence and Data Analytics.
+
+                </p>
+
+                <div class="stats-box">
+
+                    <div class="stat-item">
+
+                        <h2>95%</h2>
+
+                        <p>Prediction Accuracy</p>
+
+                    </div>
+
+                    <div class="stat-item">
+
+                        <h2>10K+</h2>
+
+                        <p>Predictions</p>
+
+                    </div>
+
+                    <div class="stat-item">
+
+                        <h2>24/7</h2>
+
+                        <p>System Access</p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+
+<style>
+
+body{
+    background:#f4f7fb;
+    overflow-x:hidden;
+}
+
+/* HERO */
+
+.hero-section{
+    position:relative;
+    min-height:100vh;
+    background:
+    linear-gradient(rgba(5,15,35,0.85), rgba(5,15,35,0.85)),
+    url('https://images.unsplash.com/photo-1516321318423-f06f85e504b3?q=80&w=1600&auto=format&fit=crop');
+    background-size:cover;
+    background-position:center;
+    color:white;
+}
+
+.hero-content{
+    position:relative;
+    z-index:2;
+}
+
+.hero-badge{
+    background:rgba(255,255,255,0.12);
+    padding:10px 20px;
+    border-radius:30px;
+    font-size:14px;
+    display:inline-block;
+    margin-bottom:25px;
+    backdrop-filter:blur(10px);
+}
+
+.hero-title{
+    font-size:65px;
+    font-weight:800;
+    line-height:1.2;
+}
+
+.hero-title span{
+    color:#00bfff;
+}
+
+.hero-text{
+    margin-top:25px;
+    font-size:20px;
+    color:#d7d7d7;
+    line-height:1.8;
+}
+
+.hero-buttons{
+    margin-top:35px;
+    display:flex;
+    gap:20px;
+    flex-wrap:wrap;
+}
+
+.main-btn{
+    background:#00bfff;
+    border:none;
+    padding:16px 32px;
+    color:white;
+    border-radius:12px;
+    font-size:18px;
+    font-weight:600;
+    transition:0.3s;
+}
+
+.main-btn:hover{
+    background:#0099cc;
+    transform:translateY(-3px);
+}
+
+.second-btn{
+    background:transparent;
+    border:2px solid white;
+    padding:16px 32px;
+    color:white;
+    border-radius:12px;
+    font-size:18px;
+    font-weight:600;
+    transition:0.3s;
+}
+
+.second-btn:hover{
+    background:white;
+    color:#111;
+}
+
+.hero-img{
+    width:100%;
+    max-width:520px;
+    border-radius:25px;
+    box-shadow:0 20px 50px rgba(0,0,0,0.4);
+}
+
+
+
+/* FEATURES */
+
+.features-section{
+    padding:100px 0;
+}
+
+.section-title h1{
+    font-size:50px;
+    font-weight:800;
+}
+
+.section-title p{
+    font-size:20px;
+    color:gray;
+}
+
+.feature-card{
+    background:white;
+    border-radius:25px;
+    padding:40px 25px;
+    text-align:center;
+    transition:0.4s;
+    height:100%;
+    box-shadow:0 10px 30px rgba(0,0,0,0.05);
+}
+
+.feature-card:hover{
+    transform:translateY(-10px);
+}
+
+.feature-card i{
+    font-size:55px;
+    color:#00bfff;
+    margin-bottom:25px;
+}
+
+.feature-card h4{
+    font-weight:700;
+    margin-bottom:15px;
+}
+
+
+
+/* ABOUT */
+
+.about-section{
+    padding:100px 0;
+    background:white;
+}
+
+.about-img{
+    width:100%;
+    border-radius:25px;
+    box-shadow:0 15px 40px rgba(0,0,0,0.1);
+}
+
+.about-badge{
+    color:#00bfff;
+    font-weight:700;
+    letter-spacing:2px;
+}
+
+.about-title{
+    margin-top:20px;
+    font-size:50px;
+    font-weight:800;
+}
+
+.about-text{
+    margin-top:20px;
+    font-size:20px;
+    color:#555;
+    line-height:1.8;
+}
+
+.stats-box{
+    margin-top:40px;
+    display:flex;
+    gap:30px;
+    flex-wrap:wrap;
+}
+
+.stat-item{
+    background:#f4f7fb;
+    padding:25px 30px;
+    border-radius:20px;
+    text-align:center;
+    min-width:150px;
+}
+
+.stat-item h2{
+    color:#00bfff;
+    font-weight:800;
+}
+
+.stat-item p{
+    margin:0;
+    color:#666;
+}
+
+
+
+/* MOBILE */
+
+@media(max-width:768px){
+
+.hero-title{
+    font-size:42px;
+}
+
+.section-title h1,
+.about-title{
+    font-size:34px;
+}
+
+.hero-text,
+.about-text{
+    font-size:17px;
+}
+
+.hero-buttons{
+    flex-direction:column;
+}
+
+.main-btn,
+.second-btn{
+    width:100%;
+}
+
+}
+
+</style>
 
 {% endblock %}
