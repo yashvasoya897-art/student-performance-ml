@@ -8,6 +8,8 @@ SECRET_KEY = os.environ.get("SECRET_KEY", "django-insecure-yash-1501")
 
 DEBUG = os.environ.get("DEBUG", "True") == "True"
 
+SITE_ID = 1
+
 ALLOWED_HOSTS = [
     "student-performance-ml-jiy7.onrender.com",
     "localhost",
@@ -22,8 +24,12 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'predictor',
-     'django.contrib.sitemaps',
+    'django.contrib.sitemaps',
     'django.contrib.sites',
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
+    'allauth.socialaccount.providers.google',
 ]
 
 MIDDLEWARE = [
@@ -34,7 +40,9 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'allauth.account.middleware.AccountMiddleware',
 ]
+
 
 ROOT_URLCONF = 'mlproject.urls'
 
@@ -67,6 +75,7 @@ AUTH_PASSWORD_VALIDATORS = [
     {'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator'},
     {'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator'},
     {'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator'},
+    
 ]
 
 LANGUAGE_CODE = 'en-us'
@@ -87,8 +96,22 @@ LOGOUT_REDIRECT_URL = "/"
 
 AUTHENTICATION_BACKENDS = [
     'django.contrib.auth.backends.ModelBackend',
+    'allauth.account.auth_backends.AuthenticationBackend',
 ]
 
 CSRF_TRUSTED_ORIGINS = [
     "https://student-performance-ml-jiy7.onrender.com"
 ]
+
+SOCIALACCOUNT_PROVIDERS = {
+    'google': {
+        'SCOPE': [
+            'profile',
+            'email',
+        ],
+        'AUTH_PARAMS': {
+            'access_type': 'online',
+        }
+    }
+}
+
