@@ -8,6 +8,7 @@ SECRET_KEY = os.environ.get("SECRET_KEY", "django-insecure-yash-1501")
 
 DEBUG = os.environ.get("DEBUG", "True") == "True"
 
+SOCIALACCOUNT_LOGIN_ON_GET = True
 SITE_ID = 1
 
 ALLOWED_HOSTS = [
@@ -49,7 +50,7 @@ ROOT_URLCONF = 'mlproject.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [BASE_DIR / 'predictor' / 'templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -115,3 +116,10 @@ SOCIALACCOUNT_PROVIDERS = {
     }
 }
 
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = 'yashvasoya897@gmail.com'
+EMAIL_HOST_PASSWORD = 'lzrimperjedkhfqf'  # App password
+DEFAULT_FROM_EMAIL = 'ML Predictor <yashvasoya897@gmail.com>'
