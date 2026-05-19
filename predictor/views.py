@@ -3,63 +3,77 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
+from django.http import HttpResponse
 
 from .models import PredictionHistory, Profile
 
-import json
-
-import joblib
 import numpy as np
-
-from django.conf import settings
+import joblib
+import json
 import os
+from django.conf import settings
 
-# HOME PAGE
+
+# =========================
+# LOAD MODEL ONCE (IMPORTANT FIX)
+# =========================
+model_path = os.path.join(settings.BASE_DIR, "model.pkl")
+model = joblib.load(model_path)
+
+
+# =========================
+# HOME / PREDICTION VIEW
+# =========================
 @login_required(login_url="/")
 def home(request):
 
     result = None
     feedback = None
 
-    model_path = os.path.join(settings.BASE_DIR, "model.pkl")
-    model = joblib.load(model_path)
-
     if request.method == "POST":
 
-        hours = float(request.POST.get("hours"))
-        attendance = float(request.POST.get("attendance"))
-        sleep = float(request.POST.get("sleep"))
-        prev_marks = float(request.POST.get("prev_marks"))
+        try:
+            hours = float(request.POST.get("study_hours"))
+            attendance = float(request.POST.get("attendance"))
+            sleep = float(request.POST.get("sleep_hours"))
+            prev_marks = float(request.POST.get("prev_marks"))
 
-        input_data = np.array([[hours, attendance, sleep, prev_marks]])
+            # ML INPUT
+            input_data = np.array([[hours, attendance, sleep, prev_marks]])
 
-        prediction = model.predict(input_data)
+            prediction = model.predict(input_data)
+            result = round(float(prediction[0]), 2)
 
-        result = round(prediction[0], 2)
+            # FEEDBACK SYSTEM
+            if result >= 80:
+                feedback = "Excellent performance 🔥"
+            elif result >= 60:
+                feedback = "Good, keep improving 👍"
+            elif result >= 40:
+                feedback = "Average performance ⚠️"
+            else:
+                feedback = "Needs improvement 📉"
 
-        # 🤖 AI FEEDBACK LOGIC
-        if result >= 80:
-            feedback = "Excellent performance 🔥"
-        elif result >= 60:
-            feedback = "Good, keep improving 👍"
-        elif result >= 40:
-            feedback = "Average performance ⚠️"
-        else:
-            feedback = "Needs improvement 📉"
+            # SAVE HISTORY
+            PredictionHistory.objects.create(
+                user=request.user,
+                hours=hours,
+                result=result
+            )
 
-        PredictionHistory.objects.create(
-            user=request.user,
-            hours=hours,
-            result=result
-        )
+        except Exception as e:
+            result = None
+            feedback = f"Error: {str(e)}"
 
     return render(request, "home.html", {
         "result": result,
         "feedback": feedback
     })
 
-# LOGIN
 
+# =========================
+# LOGIN
+# =========================
 def login_view(request):
 
     if request.user.is_authenticated:
@@ -70,36 +84,28 @@ def login_view(request):
         username = request.POST.get("username")
         password = request.POST.get("password")
 
-        user = authenticate(
-            request,
-            username=username,
-            password=password
-        )
+        user = authenticate(request, username=username, password=password)
 
-        if user is not None:
-
+        if user:
             login(request, user)
-
             return redirect("home")
-
         else:
-
-            messages.error(
-                request,
-                "Invalid Username or Password"
-            )
+            messages.error(request, "Invalid Username or Password")
 
     return render(request, "login.html")
 
 
+# =========================
+# LOGOUT
+# =========================
 def logout_view(request):
-
     logout(request)
-
     return redirect("login")
 
 
+# =========================
 # REGISTER
+# =========================
 def register_view(request):
 
     if request.method == "POST":
@@ -110,15 +116,11 @@ def register_view(request):
         password2 = request.POST.get("password2")
 
         if password1 != password2:
-
             messages.error(request, "Passwords do not match")
-
             return redirect("register")
 
         if User.objects.filter(username=username).exists():
-
             messages.error(request, "Username already exists")
-
             return redirect("register")
 
         user = User.objects.create_user(
@@ -130,43 +132,36 @@ def register_view(request):
         Profile.objects.create(user=user)
 
         messages.success(request, "Account Created Successfully")
-
         return redirect("login")
 
     return render(request, "register.html")
 
 
+# =========================
 # DASHBOARD
+# =========================
 @login_required(login_url="/")
 def dashboard(request):
 
-    data = PredictionHistory.objects.filter(
-        user=request.user
-    )
-
+    data = PredictionHistory.objects.filter(user=request.user)
     total = data.count()
 
     if total == 0:
+        return render(request, "dashboard.html", {"total": 0})
 
-        context = {
-            "total": 0
-        }
+    results = [i.result for i in data]
 
-    else:
-
-        results = [i.result for i in data]
-
-        context = {
-            "total": total,
-            "avg": sum(results) / total,
-            "max": max(results),
-            "min": min(results),
-        }
-
-    return render(request, "dashboard.html", context)
+    return render(request, "dashboard.html", {
+        "total": total,
+        "avg": sum(results) / total,
+        "max": max(results),
+        "min": min(results),
+    })
 
 
+# =========================
 # HISTORY
+# =========================
 @login_required(login_url="/")
 def history_view(request):
 
@@ -178,21 +173,17 @@ def history_view(request):
         "data": data
     })
 
+
+# =========================
 # GRAPH
+# =========================
 @login_required(login_url="/")
 def graph_view(request):
 
-    data = PredictionHistory.objects.filter(
-        user=request.user
-    )
+    data = PredictionHistory.objects.filter(user=request.user)
 
-    hours = []
-    results = []
-
-    for i in data:
-
-        hours.append(i.hours)
-        results.append(i.result)
+    hours = [i.hours for i in data]
+    results = [i.result for i in data]
 
     return render(request, "graph.html", {
         "hours": json.dumps(hours),
@@ -200,12 +191,13 @@ def graph_view(request):
     })
 
 
+# =========================
+# PROFILE
+# =========================
 @login_required(login_url="/")
 def profile_view(request):
 
-    profile, created = Profile.objects.get_or_create(
-        user=request.user
-    )
+    profile, created = Profile.objects.get_or_create(user=request.user)
 
     total_predictions = PredictionHistory.objects.filter(
         user=request.user
@@ -216,9 +208,12 @@ def profile_view(request):
         "total_predictions": total_predictions,
     })
 
-from django.http import HttpResponse
 
+# =========================
+# SITEMAP
+# =========================
 def sitemap_xml(request):
+
     xml = """<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
     <url>
@@ -231,4 +226,5 @@ def sitemap_xml(request):
         <loc>https://student-performance-ml-jiy7.onrender.com/home/</loc>
     </url>
 </urlset>"""
+
     return HttpResponse(xml, content_type="text/xml")
