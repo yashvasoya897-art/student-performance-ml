@@ -6,3 +6,4 @@ pandas
 scikit-learn
 Pillow
 django-allauth
+requests
