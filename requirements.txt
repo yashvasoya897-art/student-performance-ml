@@ -7,3 +7,5 @@ scikit-learn
 Pillow
 django-allauth
 requests
+PyJWT
+cryptography
