@@ -46,6 +46,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
 
     path('', views.login_view, name='login'),
+     path('accounts/', include('allauth.urls')), 
     path('register/', views.register_view, name='register'),
     path('home/', views.home, name='home'),
     path('dashboard/', views.dashboard, name='dashboard'),
@@ -55,6 +56,7 @@ urlpatterns = [
     path('logout/', views.logout_view, name='logout'),
 
     path('accounts/login/', views.login_view),
+    path('accounts/', include('allauth.urls')),
 
     # sitemap (FIXED)
     path('sitemap.xml', sitemap, {'sitemaps': sitemaps}, name='sitemap'),
