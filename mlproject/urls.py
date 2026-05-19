@@ -15,51 +15,68 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path, include, reverse
+from django.urls import path, include
+from django.conf import settings
+from django.conf.urls.static import static
 from django.contrib.sitemaps import Sitemap
 from django.contrib.sitemaps.views import sitemap
 from predictor import views
-from django.conf import settings
-from django.conf.urls.static import static
 
 
+# =========================
+# SITEMAP
+# =========================
 class StaticViewSitemap(Sitemap):
     priority = 0.8
     changefreq = "daily"
 
     def items(self):
         return [
-            ('login', '/'),
-            ('register', '/register/'),
-            ('home', '/home/'),
+            "login",
+            "register",
+            "home",
         ]
 
     def location(self, item):
-        return reverse(item)
+        return f"/{item}/" if item != "login" else "/"
 
 
 sitemaps = {
-    'static': StaticViewSitemap,
+    "static": StaticViewSitemap,
 }
 
+
+# =========================
+# URL PATTERNS
+# =========================
 urlpatterns = [
+
+    # Admin
     path('admin/', admin.site.urls),
 
+    # Auth (ONLY ONE - KEEP SIMPLE)
+    path('accounts/', include('django.contrib.auth.urls')),
+
+    # Pages
     path('', views.login_view, name='login'),
-     path('accounts/', include('allauth.urls')), 
     path('register/', views.register_view, name='register'),
     path('home/', views.home, name='home'),
+
+    # App pages
     path('dashboard/', views.dashboard, name='dashboard'),
     path('history/', views.history_view, name='history'),
     path('graph/', views.graph_view, name='graph'),
     path('profile/', views.profile_view, name='profile'),
+
+    # Prediction (FIXED)
+    path('predict/', views.home, name='predict'),
+
+    # Logout
     path('logout/', views.logout_view, name='logout'),
 
-    path('accounts/login/', views.login_view),
-    path('accounts/', include('allauth.urls')),
-
-    # sitemap (FIXED)
+    # Sitemap
     path('sitemap.xml', sitemap, {'sitemaps': sitemaps}, name='sitemap'),
 ]
 
+# MEDIA FILES
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
