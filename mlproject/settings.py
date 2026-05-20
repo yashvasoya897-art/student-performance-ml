@@ -9,7 +9,7 @@ SECRET_KEY = os.environ.get("SECRET_KEY", "django-insecure-yash-1501")
 DEBUG = os.environ.get("DEBUG", "True") == "True"
 
 SOCIALACCOUNT_LOGIN_ON_GET = True
-SITE_ID = 1
+SITE_ID = 2
 
 ALLOWED_HOSTS = [
     "student-performance-ml-jiy7.onrender.com",
