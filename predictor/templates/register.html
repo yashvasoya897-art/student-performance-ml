@@ -1,81 +1,454 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Register</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ML Predictor — Register</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  :root {
+    --navy: #0d1b2a;
+    --navy-mid: #1b2d42;
+    --gold: #c9a84c;
+    --gold-light: #e8c97a;
+    --white: #ffffff;
+    --gray: #8a9bb0;
+  }
+
+  body {
+    min-height: 100vh;
+    display: flex;
+    font-family: 'DM Sans', sans-serif;
+    background-color: var(--navy);
+    overflow: hidden;
+  }
+
+  .left-panel {
+    width: 55%;
+    position: relative;
+    background: var(--navy-mid);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+  }
+
+  .left-panel::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse at 20% 50%, rgba(201,168,76,0.12) 0%, transparent 60%),
+      radial-gradient(ellipse at 80% 20%, rgba(36,59,85,0.8) 0%, transparent 50%);
+  }
+
+  .grid-overlay {
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(201,168,76,0.05) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(201,168,76,0.05) 1px, transparent 1px);
+    background-size: 48px 48px;
+  }
+
+  .left-content {
+    position: relative;
+    z-index: 2;
+    padding: 60px;
+    max-width: 480px;
+  }
+
+  .brand-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 48px;
+  }
+
+  .brand-icon {
+    width: 36px; height: 36px;
+    background: var(--gold);
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .brand-icon svg {
+    width: 20px; height: 20px;
+    fill: none;
+    stroke: var(--navy);
+    stroke-width: 2;
+  }
+
+  .brand-name {
+    font-family: 'Playfair Display', serif;
+    font-size: 18px;
+    color: var(--white);
+    letter-spacing: 0.5px;
+  }
+
+  .left-heading {
+    font-family: 'Playfair Display', serif;
+    font-size: 48px;
+    line-height: 1.15;
+    color: var(--white);
+    margin-bottom: 24px;
+    font-weight: 600;
+  }
+
+  .left-heading span { color: var(--gold); }
+
+  .left-desc {
+    font-size: 15px;
+    color: var(--gray);
+    line-height: 1.7;
+    margin-bottom: 48px;
+    font-weight: 300;
+  }
+
+  .features { display: flex; flex-direction: column; gap: 20px; }
+
+  .feature {
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+  }
+
+  .feature-icon {
+    width: 36px; height: 36px;
+    background: rgba(201,168,76,0.1);
+    border: 1px solid rgba(201,168,76,0.3);
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .feature-icon svg {
+    width: 16px; height: 16px;
+    stroke: var(--gold);
+    fill: none;
+    stroke-width: 1.8;
+  }
+
+  .feature-title {
+    font-size: 14px;
+    color: var(--white);
+    font-weight: 500;
+    margin-bottom: 4px;
+  }
+
+  .feature-desc {
+    font-size: 12px;
+    color: var(--gray);
+    line-height: 1.5;
+  }
+
+  .orb {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(60px);
+    opacity: 0.15;
+    animation: float 8s ease-in-out infinite;
+  }
+
+  .orb-1 {
+    width: 300px; height: 300px;
+    background: var(--gold);
+    top: -100px; right: -80px;
+  }
+
+  .orb-2 {
+    width: 200px; height: 200px;
+    background: #4a90d9;
+    bottom: 60px; left: -60px;
+    animation-delay: 3s;
+  }
+
+  @keyframes float {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-30px); }
+  }
+
+  .right-panel {
+    width: 45%;
+    background: var(--navy);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 48px;
+    position: relative;
+  }
+
+  .right-panel::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 1px; height: 100%;
+    background: linear-gradient(to bottom, transparent, var(--gold), transparent);
+    opacity: 0.3;
+  }
+
+  .register-card {
+    width: 100%;
+    max-width: 380px;
+    animation: slideUp 0.6s ease forwards;
+  }
+
+  @keyframes slideUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .register-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 32px;
+    color: var(--white);
+    margin-bottom: 8px;
+  }
+
+  .register-subtitle {
+    font-size: 14px;
+    color: var(--gray);
+    margin-bottom: 32px;
+    font-weight: 300;
+  }
+
+  .form-group { margin-bottom: 18px; }
+
+  label {
+    display: block;
+    font-size: 11px;
+    color: var(--gold);
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    margin-bottom: 8px;
+    font-weight: 500;
+  }
+
+  .input-wrap { position: relative; }
+
+  .input-wrap svg {
+    position: absolute;
+    left: 16px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 16px; height: 16px;
+    stroke: var(--gray);
+    fill: none;
+    stroke-width: 1.5;
+    transition: stroke 0.2s;
+    pointer-events: none;
+  }
+
+  input[type="text"],
+  input[type="email"],
+  input[type="password"] {
+    width: 100%;
+    padding: 13px 16px 13px 44px;
+    background: var(--navy-mid);
+    border: 1px solid rgba(138,155,176,0.2);
+    border-radius: 10px;
+    color: var(--white);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    transition: border-color 0.2s, box-shadow 0.2s;
+    outline: none;
+  }
+
+  input::placeholder { color: rgba(138,155,176,0.5); }
+
+  input:focus {
+    border-color: var(--gold);
+    box-shadow: 0 0 0 3px rgba(201,168,76,0.1);
+  }
+
+  .input-wrap:focus-within svg { stroke: var(--gold); }
+
+  .btn-register {
+    width: 100%;
+    padding: 15px;
+    background: var(--gold);
+    border: none;
+    border-radius: 10px;
+    color: var(--navy);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    letter-spacing: 0.5px;
+    cursor: pointer;
+    margin-top: 24px;
+    transition: background 0.2s, transform 0.1s, box-shadow 0.2s;
+  }
+
+  .btn-register:hover {
+    background: var(--gold-light);
+    box-shadow: 0 8px 24px rgba(201,168,76,0.3);
+    transform: translateY(-1px);
+  }
+
+  .btn-register:active { transform: translateY(0); }
+
+  .divider {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin: 24px 0;
+  }
+
+  .divider::before, .divider::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: rgba(138,155,176,0.15);
+  }
+
+  .divider span {
+    font-size: 11px;
+    color: var(--gray);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+
+  .login-link {
+    text-align: center;
+    font-size: 13px;
+    color: var(--gray);
+  }
+
+  .login-link a {
+    color: var(--gold);
+    text-decoration: none;
+    font-weight: 500;
+  }
+
+  .login-link a:hover { color: var(--gold-light); }
+
+  .error-msg {
+    background: rgba(224,92,92,0.1);
+    border: 1px solid rgba(224,92,92,0.3);
+    color: #e05c5c;
+    padding: 12px 16px;
+    border-radius: 8px;
+    font-size: 13px;
+    margin-bottom: 16px;
+  }
+
+  @media (max-width: 768px) {
+    .left-panel { display: none; }
+    .right-panel { width: 100%; padding: 40px 24px; }
+  }
+</style>
 </head>
-
 <body>
 
-<div class="container" style="max-width:450px; margin-top:70px;">
-
-    <div class="card p-4 shadow">
-
-        <h3 class="text-center mb-4">
-            📝 Create Account
-        </h3>
-
-        {% if messages %}
-            {% for message in messages %}
-                <div class="alert alert-danger">
-                    {{ message }}
-                </div>
-            {% endfor %}
-        {% endif %}
-
-        <form method="POST">
-
-            {% csrf_token %}
-
-            <input
-                type="text"
-                name="username"
-                class="form-control mb-3"
-                placeholder="Username"
-                required
-            >
-
-            <input
-                type="email"
-                name="email"
-                class="form-control mb-3"
-                placeholder="Email"
-                required
-            >
-
-            <input
-                type="password"
-                name="password1"
-                class="form-control mb-3"
-                placeholder="Password"
-                required
-            >
-
-            <input
-                type="password"
-                name="password2"
-                class="form-control mb-3"
-                placeholder="Confirm Password"
-                required
-            >
-
-            <button class="btn btn-success w-100">
-                Register
-            </button>
-
-        </form>
-
-        <div class="text-center mt-3">
-            Already have account?
-
-            <a href="/">
-                Login
-            </a>
-        </div>
-
+<div class="left-panel">
+  <div class="orb orb-1"></div>
+  <div class="orb orb-2"></div>
+  <div class="grid-overlay"></div>
+  <div class="left-content">
+    <div class="brand-badge">
+      <div class="brand-icon">
+        <svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+      </div>
+      <span class="brand-name">ML Predictor</span>
     </div>
+    <h1 class="left-heading">
+      Join the<br><span>Future</span> of<br>Education
+    </h1>
+    <p class="left-desc">
+      Create your account and start predicting student performance with the power of machine learning.
+    </p>
+    <div class="features">
+      <div class="feature">
+        <div class="feature-icon">
+          <svg viewBox="0 0 24 24"><path d="M12 20h9M16.5 3.5a2.121 2.121 0 013 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+        </div>
+        <div>
+          <div class="feature-title">Easy Predictions</div>
+          <div class="feature-desc">Enter student data and get instant ML-powered results</div>
+        </div>
+      </div>
+      <div class="feature">
+        <div class="feature-icon">
+          <svg viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+        </div>
+        <div>
+          <div class="feature-title">Track History</div>
+          <div class="feature-desc">View all your past predictions in one place</div>
+        </div>
+      </div>
+      <div class="feature">
+        <div class="feature-icon">
+          <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>
+        </div>
+        <div>
+          <div class="feature-title">Visual Analytics</div>
+          <div class="feature-desc">Beautiful graphs and performance insights</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 
+<div class="right-panel">
+  <div class="register-card">
+    <h2 class="register-title">Create Account</h2>
+    <p class="register-subtitle">Fill in your details to get started</p>
+
+    {% if messages %}
+      {% for message in messages %}
+        <div class="error-msg">{{ message }}</div>
+      {% endfor %}
+    {% endif %}
+
+    <form method="POST" action="{% url 'register' %}">
+      {% csrf_token %}
+
+      <div class="form-group">
+        <label for="username">Username</label>
+        <div class="input-wrap">
+          <input type="text" id="username" name="username" placeholder="Choose a username" required>
+          <svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="email">Email</label>
+        <div class="input-wrap">
+          <input type="email" id="email" name="email" placeholder="Enter your email" required>
+          <svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="password1">Password</label>
+        <div class="input-wrap">
+          <input type="password" id="password1" name="password1" placeholder="Create a password" required>
+          <svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="password2">Confirm Password</label>
+        <div class="input-wrap">
+          <input type="password" id="password2" name="password2" placeholder="Repeat your password" required>
+          <svg viewBox="0 0 24 24"><path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+        </div>
+      </div>
+
+      <button type="submit" class="btn-register">Create Account</button>
+    </form>
+
+    <div class="divider"><span>Already registered?</span></div>
+    <p class="login-link">
+      Already have an account? <a href="{% url 'login' %}">Sign in</a>
+    </p>
+  </div>
 </div>
 
 </body>
