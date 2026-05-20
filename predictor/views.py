@@ -12,6 +12,7 @@ import joblib
 import json
 import os
 from django.conf import settings
+from .forms import ProfileImageForm
 
 
 # =========================
@@ -24,51 +25,9 @@ model = joblib.load(model_path)
 # =========================
 # HOME / PREDICTION VIEW
 # =========================
-@login_required(login_url="/")
 def home(request):
 
-    result = None
-    feedback = None
-
-    if request.method == "POST":
-
-        try:
-            hours = float(request.POST.get("study_hours"))
-            attendance = float(request.POST.get("attendance"))
-            sleep = float(request.POST.get("sleep_hours"))
-            prev_marks = float(request.POST.get("prev_marks"))
-
-            # ML INPUT
-            input_data = np.array([[hours, attendance, sleep, prev_marks]])
-
-            prediction = model.predict(input_data)
-            result = round(float(prediction[0]), 2)
-
-            # FEEDBACK SYSTEM
-            if result >= 80:
-                feedback = "Excellent performance 🔥"
-            elif result >= 60:
-                feedback = "Good, keep improving 👍"
-            elif result >= 40:
-                feedback = "Average performance ⚠️"
-            else:
-                feedback = "Needs improvement 📉"
-
-            # SAVE HISTORY
-            PredictionHistory.objects.create(
-                user=request.user,
-                hours=hours,
-                result=result
-            )
-
-        except Exception as e:
-            result = None
-            feedback = f"Error: {str(e)}"
-
-    return render(request, "home.html", {
-        "result": result,
-        "feedback": feedback
-    })
+    return render(request, "home.html")
 
 
 # =========================
@@ -115,49 +74,162 @@ def register_view(request):
         password1 = request.POST.get("password1")
         password2 = request.POST.get("password2")
 
+        # password check
         if password1 != password2:
             messages.error(request, "Passwords do not match")
             return redirect("register")
 
+        # username already exists
         if User.objects.filter(username=username).exists():
             messages.error(request, "Username already exists")
             return redirect("register")
 
+        # email already exists
+        if User.objects.filter(email=email).exists():
+            messages.error(request, "Email already exists")
+            return redirect("register")
+
+        # create user
         user = User.objects.create_user(
             username=username,
             email=email,
             password=password1
         )
 
-        Profile.objects.create(user=user)
+        # create profile only once
+        Profile.objects.get_or_create(user=user)
 
-        messages.success(request, "Account Created Successfully")
-        return redirect("login")
+        login(request, user, backend='django.contrib.auth.backends.ModelBackend')
+
+        messages.success(request, "Account created successfully")
+
+        return redirect("home")
 
     return render(request, "register.html")
 
+def signup_view(request):
+    if request.method == "POST":
+        username = request.POST['username']
+        email = request.POST['email']
+        password = request.POST['password']
 
+        if User.objects.filter(username=username).exists():
+            messages.error(request, "Username already exists")
+            return redirect('signup')
+
+        user = User.objects.create_user(
+            username=username,
+            email=email,
+            password=password
+        )
+
+        # IMPORTANT LINE
+        login(request, user, backend='django.contrib.auth.backends.ModelBackend')
+
+        messages.success(request, "Account created successfully")
+        return redirect('home')
+
+    return render(request, 'signup.html')
 # =========================
 # DASHBOARD
 # =========================
 @login_required(login_url="/")
 def dashboard(request):
 
-    data = PredictionHistory.objects.filter(user=request.user)
+    result = None
+    feedback = None
+
+    # DASHBOARD STATS
+    data = PredictionHistory.objects.filter(
+        user=request.user
+    )
+
     total = data.count()
 
-    if total == 0:
-        return render(request, "dashboard.html", {"total": 0})
+    if total > 0:
 
-    results = [i.result for i in data]
+        results = [i.result for i in data]
+
+        avg = round(sum(results) / total, 2)
+        highest = max(results)
+
+    else:
+
+        avg = 0
+        highest = 0
+
+    # PREDICTION SYSTEM
+    if request.method == "POST":
+
+        hours = float(request.POST.get("study_hours"))
+        attendance = float(request.POST.get("attendance"))
+        sleep = float(request.POST.get("sleep_hours"))
+        prev_marks = float(request.POST.get("prev_marks"))
+
+        input_data = np.array([
+            [hours, attendance, sleep, prev_marks]
+        ])
+
+        prediction = model.predict(input_data)
+
+        result = round(float(prediction[0]), 2)
+
+        # SAVE HISTORY
+        PredictionHistory.objects.create(
+            user=request.user,
+            hours=hours,
+            result=result
+        )
+
+        # AI FEEDBACK
+        import random
+
+        excellent = [
+            "🔥 Excellent consistency in academics.",
+            "🚀 Outstanding predicted performance.",
+            "🎯 Great work! Keep maintaining your routine."
+        ]
+
+        good = [
+            "👍 Good progress, stay consistent.",
+            "📚 You're doing well, improve gradually.",
+            "💡 Nice performance, keep practicing daily."
+        ]
+
+        average = [
+            "⚠️ Focus more on study routine.",
+            "📖 Increase study hours for better marks.",
+            "🧠 Practice revision regularly."
+        ]
+
+        low = [
+            "🚨 Attendance and study routine need improvement.",
+            "📉 Work on consistency and sleep schedule.",
+            "💪 Start improving basics step by step."
+        ]
+
+        if result >= 80:
+            feedback = random.choice(excellent)
+
+        elif result >= 60:
+            feedback = random.choice(good)
+
+        elif result >= 40:
+            feedback = random.choice(average)
+
+        else:
+            feedback = random.choice(low)
 
     return render(request, "dashboard.html", {
-        "total": total,
-        "avg": sum(results) / total,
-        "max": max(results),
-        "min": min(results),
-    })
 
+        "result": result,
+        "feedback": feedback,
+
+        "total": total,
+        "avg": avg,
+        "max": highest,
+
+    })
 
 # =========================
 # HISTORY
@@ -197,15 +269,37 @@ def graph_view(request):
 @login_required(login_url="/")
 def profile_view(request):
 
-    profile, created = Profile.objects.get_or_create(user=request.user)
+    profile, created = Profile.objects.get_or_create(
+        user=request.user
+    )
+
+    if request.method == "POST":
+
+        form = ProfileImageForm(
+            request.POST,
+            request.FILES,
+            instance=profile
+        )
+
+        if form.is_valid():
+            form.save()
+
+    else:
+
+        form = ProfileImageForm(
+            instance=profile
+        )
 
     total_predictions = PredictionHistory.objects.filter(
         user=request.user
     ).count()
 
     return render(request, "profile.html", {
+
         "profile": profile,
+        "form": form,
         "total_predictions": total_predictions,
+
     })
 
 
