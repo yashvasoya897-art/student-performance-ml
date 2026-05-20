@@ -51,31 +51,33 @@ sitemaps = {
 # =========================
 urlpatterns = [
 
-    # Admin
     path('admin/', admin.site.urls),
 
-    # Auth (ONLY ONE - KEEP SIMPLE)
-    path('accounts/', include('django.contrib.auth.urls')),
+    path("", include("predictor.urls")),
 
-    # Pages
     path('', views.login_view, name='login'),
+    path("signup/", views.signup_view, name="signup"),
+
     path('register/', views.register_view, name='register'),
+
     path('home/', views.home, name='home'),
 
-    # App pages
     path('dashboard/', views.dashboard, name='dashboard'),
+
     path('history/', views.history_view, name='history'),
+
     path('graph/', views.graph_view, name='graph'),
+
     path('profile/', views.profile_view, name='profile'),
 
-    # Prediction (FIXED)
-    path('predict/', views.home, name='predict'),
-
-    # Logout
     path('logout/', views.logout_view, name='logout'),
 
-    # Sitemap
-    path('sitemap.xml', sitemap, {'sitemaps': sitemaps}, name='sitemap'),
+    # AUTH URLS
+    path('accounts/', include('django.contrib.auth.urls')),
+
+    # GOOGLE LOGIN
+    path('accounts/', include('allauth.urls')),
+
 ]
 
 # MEDIA FILES
