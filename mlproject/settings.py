@@ -44,7 +44,6 @@ MIDDLEWARE = [
     'allauth.account.middleware.AccountMiddleware',
 ]
 
-
 ROOT_URLCONF = 'mlproject.urls'
 
 TEMPLATES = [
@@ -76,7 +75,6 @@ AUTH_PASSWORD_VALIDATORS = [
     {'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator'},
     {'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator'},
     {'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator'},
-    
 ]
 
 LANGUAGE_CODE = 'en-us'
@@ -95,15 +93,15 @@ LOGIN_URL = "/"
 LOGIN_REDIRECT_URL = "/home/"
 LOGOUT_REDIRECT_URL = "/"
 
-LOGOUT_REDIRECT_URL = "/"
-LOGIN_URL = "/"
 AUTHENTICATION_BACKENDS = [
     'django.contrib.auth.backends.ModelBackend',
     'allauth.account.auth_backends.AuthenticationBackend',
 ]
 
 CSRF_TRUSTED_ORIGINS = [
-    "https://student-performance-ml-jiy7.onrender.com"
+    "https://student-performance-ml-jiy7.onrender.com",
+    "http://127.0.0.1:8000",
+    "http://localhost:8000",
 ]
 
 SOCIALACCOUNT_PROVIDERS = {
@@ -118,12 +116,16 @@ SOCIALACCOUNT_PROVIDERS = {
     }
 }
 
+# Allauth settings
+ACCOUNT_EMAIL_VERIFICATION = 'none'
+ACCOUNT_USERNAME_REQUIRED = False
+ACCOUNT_EMAIL_REQUIRED = True
+SOCIALACCOUNT_AUTO_SIGNUP = True
+
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 EMAIL_HOST_USER = 'yashvasoya897@gmail.com'
-EMAIL_HOST_PASSWORD = 'lzrimperjedkhfqf'  # App password
+EMAIL_HOST_PASSWORD = 'lzrimperjedkhfqf'
 DEFAULT_FROM_EMAIL = 'ML Predictor <yashvasoya897@gmail.com>'
-
-
