@@ -131,4 +131,3 @@ EMAIL_HOST_PASSWORD = 'lzrimperjedkhfqf'
 DEFAULT_FROM_EMAIL = 'ML Predictor <yashvasoya897@gmail.com>'
 
 
-SITE_DOMAIN = "student-performance-ml-jiy7.onrender.com"
